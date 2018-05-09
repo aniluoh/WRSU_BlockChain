@@ -1,0 +1,19 @@
+# to call xterm 
+xhost +local:
+
+# to create network topology
+sudo mn --topo=single,5 --link=tc,bw=1000 --controller=remote --mac
+
+# to set the flow network rules
+sudo ovs-ofctl add-flow s1 dl_dst=00:00:00:00:00:01,action=output:1
+sudo ovs-ofctl add-flow s1 dl_dst=00:00:00:00:00:02,action=output:2
+sudo ovs-ofctl add-flow s1 dl_dst=00:00:00:00:00:03,action=output:3
+sudo ovs-ofctl add-flow s1 dl_dst=00:00:00:00:00:04,action=output:4
+sudo ovs-ofctl add-flow s1 dl_dst=00:00:00:00:00:05,action=output:5
+sudo ovs-ofctl add-flow s1 dl_dst=ff:ff:ff:ff:ff:ff,action=flood
+
+# to watch the connections
+sudo ovs-ofctl dump-flows s1
+watch -n.5 "sudo ovs-ofctl dump-flows s1"
+
+# future use
